@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
-from .models import announced_pu_results, polling_unit
-from .forms import PollingUnitForm, get_ip_address
+from .models import announced_pu_results, polling_unit, party
+from .forms import get_ip_address
 
 
 class IndexView(generic.View):
@@ -19,9 +19,10 @@ class PollingUnit(generic.View):
 class PostPoll(generic.View):
 
     def get(self, request, *args, **kwargs):
-        form = PollingUnitForm()
+        polling_units = polling_unit.objects.all()
+        parties = party.objects.all()
         ip_address = get_ip_address()
-        return render(request, 'results/post.html', {'ip_address': ip_address})
+        return render(request, 'results/post.html', {'ip_address': ip_address, 'polling_units': polling_units, 'parties': parties})
 
     
     def post(self, request, *args, **kwargs):

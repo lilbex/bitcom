@@ -1,23 +1,10 @@
-
-{% load crispy_forms_tags %}
-
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-    
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-  </head>
-  <body>
+{% include '../base/header.html' %}
     {% include '../base/nav.html' %}
     <div class="container-fluid">
       
       <div class="row" style="width:40%; margin: 0 auto; border-radius: 5px; box-shadow: -2px 1px 33px 0px rgba(0,0,0,0.75);
       -webkit-box-shadow: -2px 1px 33px 0px rgba(0,0,0,0.75);
-      -moz-box-shadow: -2px 1px 33px 0px rgba(0,0,0,0.75); margin-top: 5%; padding: 2%">
+      -moz-box-shadow: -2px 1px 33px 0px rgba(0,0,0,0.75); margin-top: 5%; padding: 2%; background: whitesmoke;">
         <form action="/postpolls/" method="post">
           {% csrf_token %}
           
@@ -30,7 +17,21 @@
             </div>
       
             <div class="input-group mb-3">
-              <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="party_abbreviation" name="party_abbreviation" required>
+              <select class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="polling_unit_uniqueid" required>
+                <option value="">Select a Polling Unit</option>
+                {% for polling_unit in polling_units %}
+                <option value={{polling_unit.polling_unit_id}}>{{polling_unit.polling_unit_name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="input-group mb-3">
+              <select class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="party_abbreviation" required>
+                <option value="">Select a party</option>
+                {% for party in parties %}
+                <option value={{party.partyid}}>{{party.partyname}}</option>
+                {% endfor %}
+              </select>
             </div>
       
             <div class="input-group mb-3">
@@ -41,9 +42,7 @@
               <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"  placeholder="Entered by" name="entered_by" required>
             </div>
       
-            <div class="input-group mb-3">
-              <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"  placeholder="Polling unit ID" name="polling_unit_uniqueid" required>
-            </div>
+            
       
             <button type="submit" class="btn btn-outline-secondary" style="width:100%">Post Vote Count</button>
           </form>
@@ -51,14 +50,11 @@
       
     </div>
     
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
   <script>
       let currentDate = new Date(Date.now());
       let date =currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
       let time = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
       document.getElementById('currentDate').value = date + " " + time;
-    
   </script>
-  </body>
+  {% include '../base/footer.html' %}
   </html>
